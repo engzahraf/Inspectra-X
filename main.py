@@ -30,6 +30,9 @@ from src.feature_extraction import (
 from src.preprocessing import get_or_create_reference_template
 from src.data_quality import run_stage2_analysis
 from src.data_preparation import run_data_preparation
+from src.models import run_stage4_training_and_evaluation
+from src.prediction_pipeline import SteelDefectPredictor, print_prediction_report
+
 
 
 def parse_args():
@@ -75,9 +78,9 @@ def parse_args():
     parser.add_argument(
         "--stage",
         type=str,
-        choices=["all", "1", "2", "3"],
+        choices=["all", "1", "2", "3", "4"],
         default="all",
-        help="Pipeline stage to execute: '1' (Extraction), '2' (Data Quality), '3' (Stratified Splitting), or 'all'"
+        help="Pipeline stage to execute: '1' (Extraction), '2' (Data Quality), '3' (Splitting), '4' (ML Training & Evaluation), or 'all'"
     )
     parser.add_argument(
         "--skip-extraction",
@@ -92,10 +95,28 @@ def parse_args():
         help="Directory to save Stage 3 stratified dataset splits"
     )
     parser.add_argument(
+        "--models-dir",
+        type=str,
+        default="models",
+        help="Directory to save Stage 4 trained ML models and artifacts"
+    )
+    parser.add_argument(
         "--results-dir",
         type=str,
         default="results",
         help="Directory to save analytical results, plots, and reports"
+    )
+    parser.add_argument(
+        "--predict",
+        type=str,
+        default=None,
+        help="Path to an individual steel surface image for real-time defect diagnosis"
+    )
+    parser.add_argument(
+        "--threshold",
+        type=float,
+        default=0.5,
+        help="Classification decision threshold for prediction (default: 0.5)"
     )
     return parser.parse_args()
 
@@ -348,6 +369,24 @@ def main():
         )
 
     # -------------------------------------------------------------
+    # PREDICTION MODE: Real-time inference on a new image
+    # -------------------------------------------------------------
+    if args.predict is not None:
+        print("\n[*] Initializing Inspectra-X Real-Time Prediction Engine...")
+        model_path = os.path.join(args.models_dir, "best_model.joblib")
+        scaler_path = os.path.join(args.models_dir, "scaler.joblib")
+        meta_path = os.path.join(args.models_dir, "metadata.json")
+        predictor = SteelDefectPredictor(
+            model_path=model_path,
+            scaler_path=scaler_path,
+            metadata_path=meta_path,
+            reference_image_path=args.reference_image
+        )
+        result = predictor.predict(args.predict, decision_threshold=args.threshold)
+        print_prediction_report(result)
+        return
+
+    # -------------------------------------------------------------
     # STAGE 2: Comprehensive Feature Analysis & Data Quality
     # -------------------------------------------------------------
     if args.stage in ("all", "2"):
@@ -363,6 +402,16 @@ def main():
         run_data_preparation(
             features_csv=args.output_csv,
             output_dir=args.splits_dir
+        )
+
+    # -------------------------------------------------------------
+    # STAGE 4: Classical ML Model Training, Evaluation & Selection
+    # -------------------------------------------------------------
+    if args.stage in ("all", "4"):
+        run_stage4_training_and_evaluation(
+            splits_dir=args.splits_dir,
+            models_dir=args.models_dir,
+            results_dir=args.results_dir
         )
 
     total_time = time.time() - start_time

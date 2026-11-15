@@ -1,0 +1,67 @@
+{
+  "best_model_name": "Random Forest",
+  "feature_columns": [
+    "glcm_contrast",
+    "glcm_correlation",
+    "glcm_energy",
+    "lbp_entropy",
+    "gabor_energy",
+    "canny_edge_density",
+    "sobel_magnitude_mean",
+    "laplacian_variance",
+    "connected_component_count",
+    "largest_component_solidity",
+    "defect_aspect_ratio",
+    "skeleton_branching_complexity",
+    "image_entropy",
+    "ssim_to_reference",
+    "fourier_peak_frequency"
+  ],
+  "target_columns": [
+    "Crazing",
+    "Inclusion",
+    "Patches",
+    "Pitted_Surface"
+  ],
+  "validation_metrics": {
+    "macro_f1": 0.7478,
+    "micro_f1": 0.8519,
+    "subset_accuracy": 0.8562,
+    "hamming_loss": 0.0452
+  },
+  "test_metrics": {
+    "macro_f1": 0.7668248413457608,
+    "micro_f1": 0.8468233246301131,
+    "subset_accuracy": 0.8541887592788971,
+    "hamming_loss": 0.04665959703075292
+  },
+  "all_models_validation": [
+    {
+      "Model": "Random Forest",
+      "Macro F1": 0.7478,
+      "Micro F1": 0.8519,
+      "Weighted F1": 0.8558,
+      "Subset Accuracy": 0.8562,
+      "Hamming Loss": 0.0452,
+      "Train Time (s)": 14.29
+    },
+    {
+      "Model": "Support Vector Machine",
+      "Macro F1": 0.6948,
+      "Micro F1": 0.847,
+      "Weighted F1": 0.8381,
+      "Subset Accuracy": 0.8785,
+      "Hamming Loss": 0.0424,
+      "Train Time (s)": 23.14
+    },
+    {
+      "Model": "XGBoost",
+      "Macro F1": 0.7475,
+      "Micro F1": 0.8468,
+      "Weighted F1": 0.8557,
+      "Subset Accuracy": 0.8446,
+      "Hamming Loss": 0.0477,
+      "Train Time (s)": 6.38
+    }
+  ]
+}

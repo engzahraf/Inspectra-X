@@ -676,7 +676,7 @@ def generate_markdown_report(
         "",
         f"- **Defect-Free Images (Clean Sheets):** {target_results['clean_images_count']:,} ({target_results['clean_images_pct']:.2f}%)",
         f"- **Single Defect Images:** {target_results['single_defect_count']:,} ({target_results['single_defect_pct']:.2f}%)",
-        f"- **Multi-Label Images ($\ge 2$ simultaneous defects):** {target_results['multi_defect_count']:,} ({target_results['multi_defect_pct']:.2f}%)",
+        rf"- **Multi-Label Images ($\ge 2$ simultaneous defects):** {target_results['multi_defect_count']:,} ({target_results['multi_defect_pct']:.2f}%)",
         "",
         "### Defect Co-Occurrence Matrix ($Y^T Y$)",
         "",
