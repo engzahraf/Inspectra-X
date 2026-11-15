@@ -1,0 +1,5 @@
+subset,total_samples,subset_percentage,clean_images_count,clean_images_pct,single_defect_count,single_defect_pct,multilabel_count,multilabel_pct,Crazing_count,Crazing_pct,Inclusion_count,Inclusion_pct,Patches_count,Patches_pct,Pitted_Surface_count,Pitted_Surface_pct
+Full Dataset,12568,100.0,5902,46.96,6239,49.64,427,3.4,897,7.14,247,1.97,5150,40.98,801,6.37
+Training Set (70%),8797,70.0,4122,46.86,4384,49.84,291,3.31,628,7.14,173,1.97,3605,40.98,561,6.38
+Validation Set (15%),1885,15.0,890,47.21,928,49.23,67,3.55,134,7.11,37,1.96,772,40.95,120,6.37
+Test Set (15%),1886,15.01,890,47.19,927,49.15,69,3.66,135,7.16,37,1.96,773,40.99,120,6.36
